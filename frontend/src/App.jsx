@@ -43,7 +43,8 @@
 // export default App;
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -53,14 +54,28 @@ import Notes from "./pages/Notes";
 import AddNote from "./pages/AddNote";
 
 function App() {
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "React Basics",
-      content: "Today I learned about components and useState.",
-    },
-  ]);
+  const [notes, setNotes] = useState([]);
 
+  // Fetch all notes from backend
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const fetchNotes = async () => {
+    try {
+      console.log("Fetching notes...");
+
+      const response = await axios.get("http://localhost:5000/notes");
+
+      console.log("Response:", response.data);
+
+      setNotes(response.data);
+    } catch (error) {
+      console.error("Axios Error:", error);
+    }
+  };
+
+  // Temporary add function (we'll connect this to MongoDB next)
   const addNote = (title, content) => {
     const newNote = {
       id: Date.now(),
@@ -71,6 +86,7 @@ function App() {
     setNotes([...notes, newNote]);
   };
 
+  // Temporary delete function (we'll connect this to MongoDB next)
   const deleteNote = (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this note?",

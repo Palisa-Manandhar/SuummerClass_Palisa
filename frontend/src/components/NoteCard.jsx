@@ -45,7 +45,7 @@ function NoteCard({ note, deleteNote }) {
         <Button
           text="Delete"
           color="bg-red-600"
-          onClick={() => deleteNote(note.id)}
+          onClick={() => deleteNote(note._id)}
         />
       </div>
     </div>

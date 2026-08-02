@@ -44,6 +44,7 @@ import { FaPlus } from "react-icons/fa";
 import NoteCard from "../components/NoteCard";
 
 function Notes({ notes, deleteNote }) {
+  console.log(notes);
   return (
     <div className="max-w-5xl mx-auto py-10 px-5">
       <h1 className="text-4xl font-bold mb-8">My Notes</h1>
@@ -52,7 +53,7 @@ function Notes({ notes, deleteNote }) {
         <p>No Notes Available.</p>
       ) : (
         notes.map((note) => (
-          <NoteCard key={note.id} note={note} deleteNote={deleteNote} />
+          <NoteCard key={note._id} note={note} deleteNote={deleteNote} />
         ))
       )}
 
