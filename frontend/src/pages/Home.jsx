@@ -1,26 +1,3 @@
-// import { Link } from "react-router-dom";
-
-// function Home() {
-//   return (
-//     <div className="text-center mt-20">
-//       <h1 className="text-4xl font-bold">Welcome to Note Summarizer</h1>
-
-//       <p className="mt-5 text-gray-600">
-//         Write your notes and summarize them with AI.
-//       </p>
-
-//       <Link
-//         to="/notes"
-//         className="bg-green-700 text-white px-5 py-2 rounded mt-8 inline-block"
-//       >
-//         Get Started
-//       </Link>
-//     </div>
-//   );
-// }
-
-// export default Home;
-
 import { Link } from "react-router-dom";
 
 function Home() {

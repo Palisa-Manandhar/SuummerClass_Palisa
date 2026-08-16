@@ -6,18 +6,27 @@ function AddNote({ addNote }) {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [saving, setSaving] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !content) {
+    if (!title.trim() || !content.trim()) {
       alert("Please fill all fields.");
       return;
     }
 
-    addNote(title, content);
+    setSaving(true);
 
-    navigate("/notes");
+    const success = await addNote(title, content);
+
+    if (success) {
+      navigate("/notes");
+    } else {
+      alert("Failed to save note. Please try again.");
+    }
+
+    setSaving(false);
   };
 
   return (
@@ -47,9 +56,10 @@ function AddNote({ addNote }) {
 
         <button
           type="submit"
-          className="mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800"
+          disabled={saving}
+          className="mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 disabled:bg-gray-400"
         >
-          Save Note
+          {saving ? "Saving..." : "Save Note"}
         </button>
       </form>
     </div>

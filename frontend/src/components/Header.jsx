@@ -1,69 +1,41 @@
-// function Header() {
-//   return (
-//     <header className="">
-//       <nav className="bg-slate-800 text-white p-6 h-20">
-//         <div className="float-left">
-//           <a href="http://localhost5173" className="text-2xl">
-//             Note Summarizer
-//           </a>
-//         </div>
-//         <div className="float-right mr-5">
-//           <a href="#" className="ml-5 text-white hover:text-sky-400">
-//             Home
-//           </a>
-//           <a href="#" className="ml-5 text-white hover:text-sky-400">
-//             About
-//           </a>
-//           <a href="#" className="ml-5 text-white hover:text-sky-400">
-//             Contact
-//           </a>
-//         </div>
-//       </nav>
-//     </header>
-//   );
-// }
-
-// export default Header;
-
-// import { Link } from "react-router-dom";
-
-// function Header() {
-//   return (
-//     <nav className="bg-slate-800 text-white p-5 flex justify-between">
-//       <h1 className="text-2xl font-bold">Note Summarizer</h1>
-
-//       <div>
-//         <Link to="/" className="mr-6 hover:text-sky-400">
-//           Home
-//         </Link>
-
-//         <Link to="/notes" className="hover:text-sky-400">
-//           Notes
-//         </Link>
-//       </div>
-//     </nav>
-//   );
-// }
-
-// export default Header;
-
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Header() {
-  return (
-    <header className="bg-slate-800 shadow-lg">
-      <nav className="container mx-auto flex justify-between items-center p-5">
-        <h1 className="text-white text-3xl font-bold">
-          <Link to="/">Note Summarizer</Link>
-        </h1>
+  const location = useLocation();
 
-        <div>
-          <Link to="/" className="text-white mr-8 hover:text-sky-400">
+  return (
+    <header className="bg-slate-900 shadow-md sticky top-0 z-50">
+      <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-white text-2xl md:text-3xl font-bold tracking-tight"
+        >
+          Note Summarizer
+        </Link>
+
+        {/* Navigation */}
+        <div className="flex items-center gap-2">
+          <Link
+            to="/"
+            className={`px-4 py-2 rounded-lg font-medium transition ${
+              location.pathname === "/"
+                ? "bg-blue-600 text-white"
+                : "text-slate-300 hover:bg-slate-800 hover:text-white"
+            }`}
+          >
             Home
           </Link>
 
-          <Link to="/notes" className="text-white hover:text-sky-400">
-            Notes
+          <Link
+            to="/notes"
+            className={`px-4 py-2 rounded-lg font-medium transition ${
+              location.pathname === "/notes"
+                ? "bg-blue-600 text-white"
+                : "text-slate-300 hover:bg-slate-800 hover:text-white"
+            }`}
+          >
+            My Notes
           </Link>
         </div>
       </nav>

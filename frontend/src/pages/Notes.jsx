@@ -1,68 +1,63 @@
-// import { useState } from "react";
-// import NoteForm from "../components/NoteForm";
-// import NoteCard from "../components/NoteCard";
-
-// function Notes() {
-//   const [notes, setNotes] = useState([]);
-
-//   const addNote = (text) => {
-//     const newNote = {
-//       id: Date.now(),
-//       text,
-//     };
-
-//     setNotes([...notes, newNote]);
-//   };
-
-//   const deleteNote = (id) => {
-//     const updatedNotes = notes.filter((note) => note.id !== id);
-
-//     setNotes(updatedNotes);
-//   };
-
-//   return (
-//     <div className="max-w-3xl mx-auto mt-10">
-//       <h2 className="text-3xl font-bold mb-5">My Notes</h2>
-
-//       <NoteForm addNote={addNote} />
-
-//       {notes.length === 0 ? (
-//         <p>No notes yet.</p>
-//       ) : (
-//         notes.map((note) => (
-//           <NoteCard key={note.id} note={note} deleteNote={deleteNote} />
-//         ))
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Notes;
-
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import NoteCard from "../components/NoteCard";
 
-function Notes({ notes, deleteNote }) {
-  console.log(notes);
+function Notes({ notes, deleteNote, updateNote }) {
   return (
-    <div className="max-w-5xl mx-auto py-10 px-5">
-      <h1 className="text-4xl font-bold mb-8">My Notes</h1>
+    <div className="max-w-7xl mx-auto py-10 px-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+        <Link
+          to="/add-note"
+          className="fixed bottom-8 right-8
+             bg-blue-600 hover:bg-blue-700
+             text-white
+             w-16 h-16
+             rounded-full
+             flex items-center justify-center
+             text-2xl
+             shadow-lg hover:shadow-xl
+             hover:scale-105
+             transition-all duration-200
+             z-40"
+          title="Add New Note"
+        >
+          <FaPlus />
+        </Link>
+      </div>
 
       {notes.length === 0 ? (
-        <p>No Notes Available.</p>
-      ) : (
-        notes.map((note) => (
-          <NoteCard key={note._id} note={note} deleteNote={deleteNote} />
-        ))
-      )}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
+          <div className="text-5xl mb-4">📝</div>
 
-      <Link
-        to="/add-note"
-        className="fixed bottom-8 right-8 bg-slate-800 w-16 h-16 rounded-full flex justify-center items-center text-white text-2xl shadow-xl hover:bg-green-800"
-      >
-        <FaPlus />
-      </Link>
+          <h2 className="text-2xl font-bold text-slate-800">No notes yet</h2>
+
+          <p className="text-slate-500 mt-2 mb-6">
+            Create your first note and start organizing your thoughts.
+          </p>
+
+          <Link
+            to="/add-note"
+            className="inline-flex items-center gap-2
+                       bg-blue-600 hover:bg-blue-700
+                       text-white font-semibold
+                       px-5 py-3 rounded-xl transition"
+          >
+            <FaPlus />
+            Create Note
+          </Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {notes.map((note) => (
+            <NoteCard
+              key={note._id}
+              note={note}
+              deleteNote={deleteNote}
+              updateNote={updateNote}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

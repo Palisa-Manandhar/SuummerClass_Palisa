@@ -1,47 +1,3 @@
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
-// import Login from "./pages/Login";
-
-// function App() {
-//   return (
-//     <>
-//       <Header />
-
-//       <div>
-//         <Login />
-//       </div>
-
-//       <Footer />
-//     </>
-//   );
-// }
-
-// export default App;
-
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
-// import Home from "./pages/Home";
-// import Notes from "./pages/Notes";
-
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Header />
-
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         <Route path="/notes" element={<Notes />} />
-//         <Route path="/add-note" element={<AddNote />} />
-//       </Routes>
-
-//       <Footer />
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -56,7 +12,7 @@ import AddNote from "./pages/AddNote";
 function App() {
   const [notes, setNotes] = useState([]);
 
-  // Fetch all notes from backend
+  //Fetch notes from backend
   useEffect(() => {
     fetchNotes();
   }, []);
@@ -75,39 +31,64 @@ function App() {
     }
   };
 
-  // Temporary add function (we'll connect this to MongoDB next)
-  const addNote = (title, content) => {
-    const newNote = {
-      id: Date.now(),
-      title,
-      content,
-    };
+  //Add a new note
+  const addNote = async (title, content) => {
+    try {
+      const response = await axios.post("http://localhost:5000/notes", {
+        title,
+        content,
+      });
 
-    setNotes([...notes, newNote]);
+      console.log("Note added:", response.data);
+
+      setNotes((prevNotes) => [...prevNotes, response.data]);
+
+      return true;
+    } catch (error) {
+      console.error("Error adding note:", error);
+      return false;
+    }
   };
 
-  // Temporary delete function (we'll connect this to MongoDB next)
-  const deleteNote = (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this note?",
-    );
+  //Delete
+  const deleteNote = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/notes/${id}`);
 
-    if (confirmDelete) {
-      setNotes(notes.filter((note) => note.id !== id));
+      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
+
+      console.log("Note deleted successfully");
+    } catch (error) {
+      console.error("Error deleting note:", error);
     }
+  };
+
+  //Update
+  const updateNote = (updatedNote) => {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note._id === updatedNote._id ? updatedNote : note,
+      ),
+    );
   };
 
   return (
     <BrowserRouter>
       <Header />
 
-      <main className="min-h-screen bg-gray-100">
+      <main className="min-h-screen bg-slate-50">
         <Routes>
           <Route path="/" element={<Home />} />
 
           <Route
             path="/notes"
-            element={<Notes notes={notes} deleteNote={deleteNote} />}
+            element={
+              <Notes
+                notes={notes}
+                deleteNote={deleteNote}
+                updateNote={updateNote}
+              />
+            }
           />
 
           <Route path="/add-note" element={<AddNote addNote={addNote} />} />
